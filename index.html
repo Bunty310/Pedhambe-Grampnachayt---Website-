@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="mr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>पेढांबे ग्रामपंचायत | Pedambe Grampanchayat - अधिकृत गाव माहिती पोर्टल</title>
+  <meta name="description" content="पेढांबे ग्रामपंचायत, तालुका चिपळूण, जिल्हा रत्नागिरी - गावाची सविस्तर माहिती, स्थानिक पदाधिकारी, सांख्यिकी, शेती, शिक्षण, आरोग्य केंद्र व आपत्कालीन संपर्क.">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- React 18 & ReactDOM UMD -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <!-- Babel Standalone Compiler for JSX -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <!-- Google Fonts for Devanagari & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            vanilla: {
+              50: '#fffdf2',
+              100: '#faf3d4',
+              200: '#F3E5AB',
+              300: '#e6d389',
+              400: '#d9c375',
+              500: '#b89d42',
+              600: '#947823',
+              700: '#755b1b',
+              800: '#5a4518',
+              900: '#38290f',
+              950: '#1f1506',
+            },
+            gov: {
+              saffron: '#ea580c',
+              green: '#10b981'
+            }
+          },
+          fontFamily: {
+            devanagari: ['"Noto Sans Devanagari"', 'sans-serif'],
+            sans: ['"Noto Sans Devanagari"', '"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          animation: {
+            'blob': 'blob 7s infinite',
+            'fade-in': 'fadeIn 0.5s ease-out',
+          },
+          keyframes: {
+            blob: {
+              '0%': { transform: 'translate(0px, 0px) scale(1)' },
+              '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+              '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+              '100%': { transform: 'translate(0px, 0px) scale(1)' },
+            },
+            fadeIn: {
+              '0%': { opacity: '0', transform: 'translateY(-10px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: #fffdf2; }
+    ::-webkit-scrollbar-thumb { background: #b89d42; border-radius: 5px; }
+    ::-webkit-scrollbar-thumb:hover { background: #947823; }
+
+    body {
+      font-family: 'Noto Sans Devanagari', 'Plus Jakarta Sans', sans-serif;
+      background-color: #fffdf2;
+      color: #1c1917;
+      overflow-x: hidden;
+    }
+
+    .float-anim { animation: float 4s ease-in-out infinite; }
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-7px); }
+      100% { transform: translateY(0px); }
+    }
+
+    .pulse-glow { animation: pulseGlow 2.5s ease-in-out infinite; }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.85; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.04); }
+    }
+
+    /* Marquee Animation */
+    .marquee-container { overflow: hidden; white-space: nowrap; position: relative; }
+    .marquee-content { display: inline-block; animation: marquee 28s linear infinite; }
+    .marquee-container:hover .marquee-content { animation-play-state: paused; }
+    @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+    /* 3D Tilt Card */
+    .tilt-card { transform-style: preserve-3d; transition: transform 0.15s ease-out, box-shadow 0.3s ease; will-change: transform; }
+    .tilt-card-reset { transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1); }
+    .pop-out { transform: translateZ(25px); }
+    .pop-out-more { transform: translateZ(40px); }
+
+    /* Reveal Animations */
+    .js-reveal {
+      opacity: 0;
+      transform: translateY(40px) scale(0.98);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+    .js-reveal.is-visible { opacity: 1; transform: translateY(0) scale(1); }
+
+    /* Button Ripple */
+    .ripple-btn { position: relative; overflow: hidden; }
+    .ripple {
+      position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.45);
+      transform: scale(0); animation: rippleAnim 0.6s linear; pointer-events: none;
+    }
+    @keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
+
+    /* Custom Patterns */
+    .hero-pattern {
+      background-image: radial-gradient(#d9c375 1px, transparent 1px);
+      background-size: 32px 32px;
+      opacity: 0.25;
+    }
+    .dot-pattern-light {
+      background-color: #fffdf2;
+      background-image: radial-gradient(rgba(28, 25, 23, 0.08) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+  </style>
+</head>
+<body class="min-h-screen text-stone-900 antialiased selection:bg-vanilla-200 selection:text-stone-900">
+
+  <div id="root"></div>
+
+  <!-- React Code with JSX -->
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    const Icon = ({ name, className = "w-5 h-5" }) => {
+      useEffect(() => {
+        if (window.lucide) {
+          window.lucide.createIcons();
+        }
+      }, [name]);
+      return <i data-lucide={name} className={className}></i>;
+    };
+
+    // Simplified image path resolution targeting a strict 'images' directory
+    const resolveImg = (filename) => {
+      if (!filename) return "";
+      return `./images/${filename}`;
+    };
+
+    const useScrollReveal = () => {
+      useEffect(() => {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+              }
+            });
+          },
+          { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+        );
+
+        const elements = document.querySelectorAll('.js-reveal');
+        elements.forEach((el) => observer.observe(el));
+
+        return () => observer.disconnect();
+      }, []);
+    };
+
+    const AnimatedCounter = ({ target, suffix = "" }) => {
+      const [count, setCount] = useState(0);
+      const counterRef = useRef(null);
+      const hasAnimated = useRef(false);
+
+      useEffect(() => {
+        const numericTarget = parseInt(target.replace(/[^0-9]/g, ''), 10) || 0;
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            if (entries[0].isIntersecting && !hasAnimated.current) {
+              hasAnimated.current = true;
+              let start = 0;
+              const duration = 2000;
+              const stepTime = 20;
+              const totalSteps = duration / stepTime;
+              const increment = numericTarget / totalSteps;
+
+              const timer = setInterval(() => {
+                start += increment;
+                if (start >= numericTarget) {
+                  setCount(numericTarget);
+                  clearInterval(timer);
+                } else {
+                  setCount(Math.floor(start));
+                }
+              }, stepTime);
+            }
+          },
+          { threshold: 0.5 }
+        );
+
+        if (counterRef.current) observer.observe(counterRef.current);
+        return () => observer.disconnect();
+      }, [target]);
+
+      return (
+        <span ref={counterRef}>
+          {count.toLocaleString('mr-IN')}{suffix}
+        </span>
+      );
+    };
+
+    const TiltCard = ({ children, className = "", onClick }) => {
+      const cardRef = useRef(null);
+
+      const handleMouseMove = (e) => {
+        const card = cardRef.current;
+        if (!card) return;
+        card.classList.remove('tilt-card-reset');
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -10;
+        const rotateY = ((x - centerX) / centerX) * 10;
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+      };
+
+      const handleMouseLeave = () => {
+        const card = cardRef.current;
+        if (!card) return;
+        card.classList.add('tilt-card-reset');
+        card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+      };
+
+      return (
+        <div 
+          ref={cardRef}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          onClick={onClick}
+          className={`tilt-card ${className}`}
+        >
+          {children}
+        </div>
+      );
+    };
+
+    const RippleButton = ({ children, onClick, className = "" }) => {
+      const handleRipple = (e) => {
+        const btn = e.currentTarget;
+        const circle = document.createElement('span');
+        const diameter = Math.max(btn.clientWidth, btn.clientHeight);
+        const radius = diameter / 2;
+        const rect = btn.getBoundingClientRect();
+        
+        circle.style.width = circle.style.height = `${diameter}px`;
+        circle.style.left = `${e.clientX - rect.left - radius}px`;
+        circle.style.top = `${e.clientY - rect.top - radius}px`;
+        circle.classList.add('ripple');
+        
+        const existingRipple = btn.getElementsByClassName('ripple')[0];
+        if (existingRipple) existingRipple.remove();
+        
+        btn.appendChild(circle);
+        if (onClick) onClick(e);
+      };
+
+      return (
+        <button onClick={handleRipple} className={`ripple-btn ${className}`}>
+          {children}
+        </button>
+      );
+    };
+
+    // --- Components ---
+
+    const Marquee = () => {
+      return (
+        <div className="bg-vanilla-700 text-white h-9 relative flex items-center z-50">
+          <div className="max-w-7xl mx-auto w-full flex items-center relative h-full">
+            <div className="marquee-container w-full h-full text-xs sm:text-sm font-medium pl-32 flex items-center text-vanilla-50 tracking-wide">
+              <div className="marquee-content">
+                <span className="mx-4 text-vanilla-300">✦</span> पेढांबे ग्रामपंचायत अधिकृत माहितीपर संकेतस्थळावर आपले स्वागत आहे. 
+                <span className="mx-4 text-vanilla-300">✦</span> महात्मा गांधी तंटामुक्त गाव पुरस्कार प्राप्त पेढांबे ग्रामपंचायत. 
+                <span className="mx-4 text-vanilla-300">✦</span> स्वच्छ गाव, सुंदर गाव, समृद्ध पेढांबे!
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    const Navbar = () => {
+      const [isOpen, setIsOpen] = useState(false);
+      const [scrolled, setScrolled] = useState(false);
+
+      useEffect(() => {
+        const handleScroll = () => setScrolled(window.scrollY > 40);
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+      }, []);
+
+      const navLinks = [
+        { name: "मुखपृष्ठ", href: "#home" },
+        { name: "आमच्याबद्दल", href: "#about" },
+        { name: "प्रशासन", href: "#local-body" },
+        { name: "संस्कृती", href: "#culture" },
+        { name: "पर्यटन", href: "#tourism" },
+        { name: "संपर्क", href: "#contact" },
+      ];
+
+      return (
+        <header className={`sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-md py-3' : 'bg-vanilla-50 py-5'}`}>
+          <div className="max-w-7xl mx-auto px-4 md:px-8 flex justify-between items-center">
+            {/* Logo */}
+            <a href="#home" className="flex items-center gap-3 group">
+              <div className={`w-10 h-10 rounded-xl bg-gradient-to-br from-vanilla-400 to-vanilla-600 text-white font-black text-xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform`}>
+                ग्रा
+              </div>
+              <div>
+                <h1 className="font-black text-xl text-stone-900 leading-tight">पेढांबे ग्रामपंचायत</h1>
+                <p className="text-[9px] text-vanilla-600 uppercase tracking-widest font-extrabold">Grampanchayat</p>
+              </div>
+            </a>
+
+            {/* Desktop Nav */}
+            <nav className="hidden md:flex gap-8 items-center">
+              {navLinks.map((link, idx) => (
+                <a 
+                  key={idx} 
+                  href={link.href}
+                  className="text-stone-700 font-bold hover:text-vanilla-600 transition-colors text-sm uppercase tracking-wide"
+                >
+                  {link.name}
+                </a>
+              ))}
+              <a href="#contact">
+                <button className="bg-vanilla-600 hover:bg-vanilla-700 text-white px-5 py-2 rounded-full font-bold text-sm shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5 ml-2">
+                  संपर्क साधा
+                </button>
+              </a>
+            </nav>
+
+            {/* Mobile Toggle */}
+            <button 
+              className="md:hidden p-2 text-stone-700 hover:bg-vanilla-100 rounded-lg transition-colors"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              <Icon name={isOpen ? "x" : "menu"} className="w-6 h-6" />
+            </button>
+          </div>
+
+          {/* Mobile Nav */}
+          {isOpen && (
+            <div className="md:hidden absolute top-full left-0 w-full bg-white shadow-xl border-t border-vanilla-100 animate-fade-in flex flex-col">
+              {navLinks.map((link, idx) => (
+                <a 
+                  key={idx} 
+                  href={link.href}
+                  onClick={() => setIsOpen(false)}
+                  className="px-6 py-4 border-b border-vanilla-50 text-stone-800 font-bold hover:bg-vanilla-50 hover:text-vanilla-600 transition-colors"
+                >
+                  {link.name}
+                </a>
+              ))}
+            </div>
+          )}
+        </header>
+      );
+    };
+
+    const HeroSection = () => {
+      const triggerConfetti = () => {
+        if (window.confetti) {
+          window.confetti({ particleCount: 100, spread: 90, origin: { y: 0.6 }, colors: ['#ea580c', '#10b981', '#F3E5AB', '#ffffff'] });
+        }
+      };
+
+      return (
+        <section id="home" className="relative min-h-[90svh] flex items-center justify-center overflow-hidden pt-10 pb-20 bg-vanilla-50">
+          <div className="absolute top-20 -left-32 w-96 h-96 bg-vanilla-300 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob"></div>
+          <div className="absolute top-40 -right-32 w-96 h-96 bg-vanilla-200 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
+          <div className="absolute -bottom-32 left-1/2 w-96 h-96 bg-white rounded-full mix-blend-overlay filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
+          <div className="absolute inset-0 hero-pattern z-0"></div>
+
+          <div className="absolute inset-0 z-0">
+            <img 
+              src={resolveImg("Village.jpg")} 
+              alt="Pedambe Coastal Village" 
+              className="w-full h-full object-cover opacity-40 scale-105 transform transition-transform duration-[20s] hover:scale-110 mix-blend-luminosity"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=1600&q=80';
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-vanilla-50/90 via-vanilla-50/70 to-vanilla-50 backdrop-blur-[1px]"></div>
+          </div>
+
+          <div className="relative z-10 text-center px-4 max-w-6xl mx-auto js-reveal is-visible mt-8 w-full">
+            <div 
+              onClick={triggerConfetti}
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/80 backdrop-blur-md border border-vanilla-300 mb-8 text-xs sm:text-sm text-vanilla-800 shadow-sm float-anim cursor-pointer hover:border-vanilla-500 hover:bg-white transition-all hover:scale-105"
+              title="क्लिक करा"
+            >
+              <Icon name="map-pin" className="w-4 h-4 text-vanilla-600" />
+              <span className="font-bold tracking-wide">चिपळूण तालुका, रत्नागिरी जिल्हा, महाराष्ट्र</span>
+            </div>
+
+            <h1 className="text-6xl sm:text-7xl md:text-8xl font-black text-stone-900 mb-6 tracking-tight leading-tight drop-shadow-sm">
+              पेढांबे ग्रामपंचायत
+            </h1>
+
+            <p className="text-lg sm:text-2xl text-stone-700 mb-12 max-w-3xl mx-auto leading-relaxed font-semibold">
+              वाशिष्टी नदीच्या निसर्गरम्य पट्ट्यातील ऐतिहासिक व समृद्ध पेढांबे गाव. प्रशासकीय माहिती, शेती, सण आणि विकासकामांचा आढावा.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-5 justify-center items-center mb-20">
+              <a href="#about">
+                <RippleButton className="w-full sm:w-auto bg-gradient-to-r from-vanilla-600 to-vanilla-500 text-white hover:from-vanilla-700 hover:to-vanilla-600 px-8 py-4 rounded-2xl font-black hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 shadow-xl flex items-center justify-center gap-3 text-lg border border-vanilla-500/50">
+                  <Icon name="book-open" className="w-6 h-6" /> गावाची माहिती
+                </RippleButton>
+              </a>
+              <a href="#local-body">
+                <RippleButton className="w-full sm:w-auto bg-white/90 backdrop-blur-lg hover:bg-white text-stone-900 border-2 border-vanilla-300 px-8 py-4 rounded-2xl font-black hover:-translate-y-1 transition-all duration-300 shadow-lg flex items-center justify-center gap-3 text-lg hover:border-vanilla-500">
+                  <Icon name="users" className="w-6 h-6 text-vanilla-600" /> स्थानिक प्रशासन
+                </RippleButton>
+              </a>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 max-w-5xl mx-auto">
+              {[
+                { label: "लोकसंख्या (२०११)", val: "3224", icon: "users" },
+                { label: "एकूण घरे", val: "726", icon: "home" },
+                { label: "क्षेत्रफळ (हेक्टर)", val: "97", icon: "map" },
+                { label: "साक्षरता प्रमाण", val: "78", suffix: "%", icon: "graduation-cap" }
+              ].map((item, idx) => (
+                <div key={idx} className="relative group bg-white/60 backdrop-blur-xl border border-white/80 rounded-3xl p-5 sm:p-6 text-center shadow-xl hover:shadow-2xl hover:border-vanilla-400 transition-all duration-300 hover:-translate-y-2 overflow-hidden">
+                  <div className="absolute -right-4 -top-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <Icon name={item.icon} className="w-24 h-24 text-vanilla-700" />
+                  </div>
+                  <div className="relative z-10">
+                    <p className="text-xs sm:text-sm text-stone-600 font-bold uppercase tracking-wider mb-2">{item.label}</p>
+                    <p className="text-3xl sm:text-4xl font-black text-vanilla-700">
+                      <AnimatedCounter target={item.val} suffix={item.suffix || ""} />
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    const AboutSection = ({ onOpenLightbox }) => {
+      return (
+        <section id="about" className="py-24 px-4 md:px-8 max-w-7xl mx-auto bg-white js-reveal">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 bg-vanilla-100 text-vanilla-800 px-4 py-2 rounded-full text-xs font-black tracking-wide mb-6 border border-vanilla-300 pulse-glow">
+                <Icon name="landmark" className="w-4 h-4" /> परिचयात्मक पार्श्वभूमी
+              </div>
+              <h2 className="text-4xl sm:text-5xl font-black mb-8 text-stone-900 leading-tight">
+                पेढांबे गावाची <span className="text-vanilla-600">सविस्तर माहिती</span>
+              </h2>
+              <div className="space-y-5 text-stone-600 leading-relaxed text-lg text-justify font-medium">
+                <p>
+                  पेढांबे हे महाराष्ट्रातील रत्नागिरी जिल्ह्यातील <span className="font-bold text-stone-900 bg-vanilla-100 px-1 rounded">चिपळूण तालुक्यातील</span> एक अतिशय सुंदर, समृद्ध व ऐतिहासिक गाव आहे. चिपळूण उपजिल्हा केंद्रापासून अवघ्या १५ किमी अंतरावर व रत्नागिरी जिल्हा मुख्यालयापासून ८० किमी अंतरावर हे गाव स्थित आहे.
+                </p>
+                <p>
+                  गावचे एकूण भौगोलिक क्षेत्रफळ <span className="font-bold text-stone-900">९७ हेक्टर</span> आहे. गावाचा कारभार स्वतंत्र पेढांबे ग्रामपंचायतीद्वारे चालवला जातो. गावाला सुंदर निसर्ग, वाशिष्टी नदीचे खोरे आणि फळबागांचे वरदान लाभले आहे.
+                </p>
+                <p>
+                  गावात साक्षरतेचे प्रमाण ७८% हून अधिक असून शिक्षण, शेती व सामाजिक कार्यात पेढांबे गावाने चिपळूण तालुक्यात विशेष नावलौकिक मिळवला आहे.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-5 mt-10">
+                <div className="p-5 bg-vanilla-50 rounded-2xl border border-vanilla-200 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+                  <p className="text-xs font-bold text-stone-500 uppercase tracking-wide">उपजिल्हा केंद्र</p>
+                  <p className="font-black text-stone-900 text-lg mt-2">चिपळूण (१५ किमी)</p>
+                </div>
+                <div className="p-5 bg-vanilla-50 rounded-2xl border border-vanilla-200 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+                  <p className="text-xs font-bold text-stone-500 uppercase tracking-wide">जिल्हा मुख्यालय</p>
+                  <p className="font-black text-stone-900 text-lg mt-2">रत्नागिरी (८० किमी)</p>
+                </div>
+              </div>
+            </div>
+            
+            <TiltCard className="relative group">
+              <div className="absolute -inset-3 bg-gradient-to-br from-vanilla-300 to-gov-saffron rounded-[2rem] opacity-20 blur-2xl group-hover:opacity-50 transition duration-500"></div>
+              <div className="relative rounded-[2rem] overflow-hidden border-[6px] border-white shadow-2xl bg-white z-10 p-1">
+                <img 
+                  src={resolveImg("Panchaytphoto.jpeg")} 
+                  alt="Grampanchayat Pedambe Office" 
+                  className="w-full h-96 sm:h-[500px] object-cover rounded-3xl transition-transform duration-700 group-hover:scale-105 cursor-pointer pop-out"
+                  onClick={() => onOpenLightbox(resolveImg("Panchaytphoto.jpeg"), 'पेढांबे ग्रामपंचायत कार्यालय इमारत')}
+                  onError={(e) => { 
+                    e.target.onerror = null; 
+                    e.target.src = 'https://images.unsplash.com/photo-1577717903315-1691ae25ab3f?auto=format&fit=crop&w=1200&q=80'; 
+                  }}
+                />
+                <div className="absolute bottom-6 left-6 right-6 bg-white/95 backdrop-blur-md p-5 rounded-2xl border border-white/50 text-stone-900 flex justify-between items-center shadow-lg pop-out-more">
+                  <div>
+                    <p className="font-black text-lg text-stone-900">ग्रामपंचायत कार्यालय इमारत</p>
+                    <p className="text-xs text-stone-600 mt-1 font-bold">मु. पो. पेढांबे, ता. चिपळूण</p>
+                  </div>
+                  <button onClick={() => onOpenLightbox(resolveImg("Panchaytphoto.jpeg"), 'पेढांबे ग्रामपंचायत कार्यालय इमारत')} className="p-3 bg-vanilla-100 text-vanilla-800 font-bold rounded-xl hover:bg-vanilla-200 transition-colors shadow-sm">
+                    <Icon name="maximize-2" className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+            </TiltCard>
+          </div>
+        </section>
+      );
+    };
+
+    const LocalBodySection = () => {
+      const localLeaders = [
+        { role: "सरपंच", name: "सौ. सुवर्णा तांबे", desc: "ग्रामपंचायत पेढांबे", icon: "award", color: "from-vanilla-400 to-vanilla-600" },
+        { role: "उपसरपंच", name: "श्री. विकास जाधव", desc: "ग्रामपंचायत पेढांबे", icon: "user-check", color: "from-stone-700 to-stone-900" },
+        { role: "ग्रामविकास अधिकारी", name: "श्री. ए. बी. सावंत", desc: "शासकीय ग्रामसेवक", icon: "briefcase", color: "from-gov-saffron to-orange-700" }
+      ];
+
+      return (
+        <section id="local-body" className="py-24 px-4 bg-vanilla-50 border-y border-vanilla-200 js-reveal relative overflow-hidden">
+          <div className="absolute inset-0 hero-pattern opacity-50 z-0"></div>
+          <div className="max-w-6xl mx-auto text-center relative z-10">
+            <span className="bg-white text-vanilla-800 text-xs px-4 py-2 rounded-full font-black uppercase border border-vanilla-300 shadow-sm inline-block mb-4">
+              स्थानिक कारभारी
+            </span>
+            <h2 className="text-4xl sm:text-5xl font-black mb-4 text-stone-900">स्थानिक पदाधिकारी</h2>
+            <p className="text-stone-600 text-lg max-w-2xl mx-auto mb-16 font-medium">गावातील दैनंदिन कारभार, नागरी प्रश्न आणि विकास कामे पाहणारी स्थानिक समिती.</p>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {localLeaders.map((item, idx) => (
+                <TiltCard key={idx} className="bg-white rounded-[2rem] p-8 border border-vanilla-200 shadow-xl hover:shadow-2xl transition-all relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-vanilla-50 rounded-bl-full -z-10 group-hover:scale-110 transition-transform"></div>
+                  <div className={`w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br ${item.color} text-white flex items-center justify-center mb-6 shadow-lg pop-out float-anim font-black`}>
+                    <Icon name={item.icon} className="w-8 h-8" />
+                  </div>
+                  <span className="bg-vanilla-50 text-vanilla-800 text-xs font-black px-4 py-1.5 rounded-full uppercase border border-vanilla-200 pop-out shadow-sm">{item.role}</span>
+                  <h3 className="font-black text-2xl text-stone-900 mt-5 mb-2 pop-out-more">{item.name}</h3>
+                  <p className="text-sm text-stone-500 font-bold pop-out">{item.desc}</p>
+                </TiltCard>
+              ))}
+            </div>
+
+            <div className="mt-16 bg-white rounded-3xl p-8 border border-vanilla-200 shadow-lg max-w-4xl mx-auto flex flex-wrap justify-around text-center gap-6 relative overflow-hidden">
+              <div className="absolute left-0 top-0 w-2 h-full bg-vanilla-500"></div>
+              <div>
+                <p className="text-sm text-stone-500 font-bold uppercase tracking-wide">एकूण प्रभाग (वॉर्ड)</p>
+                <p className="text-3xl font-black text-stone-900 mt-2"><AnimatedCounter target="3" /> प्रभाग</p>
+              </div>
+              <div className="border-r-2 border-vanilla-100 hidden sm:block"></div>
+              <div>
+                <p className="text-sm text-stone-500 font-bold uppercase tracking-wide">एकूण सदस्य</p>
+                <p className="text-3xl font-black text-stone-900 mt-2"><AnimatedCounter target="9" /> सदस्य</p>
+              </div>
+              <div className="border-r-2 border-vanilla-100 hidden sm:block"></div>
+              <div>
+                <p className="text-sm text-stone-500 font-bold uppercase tracking-wide">पुरस्कार सन्मान</p>
+                <p className="text-3xl font-black text-vanilla-600 mt-2">तंटामुक्त गाव</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    const CultureSection = () => {
+      const cultureItems = [
+        { icon: "tree-pine", title: "हापूस आंबा व काजू बागायत", desc: "पेढांबे गावात रत्नागिरीच्या जगप्रसिद्ध देवगड/रत्नागिरी हापूस आंब्याची व काजूची विस्तीर्ण बागायत आहे. गावच्या अर्थव्यवस्थेत बागायतीचा मोठा वाटा आहे." },
+        { icon: "sparkles", title: "शिमोगा व धुलीवंदन सण", desc: "कोकणातील पारंपरिक ग्रामदैवत पालखी सोहळा, नमन, खेळे आणि धुलीवंदन उत्सव पेढांबे गावात अत्यंत उत्साहात साजरा केला जातो." },
+        { icon: "waves", title: "वाशिष्टी नदी खोरे", desc: "चिपळूण भागातील निसर्गरम्य वाशिष्टी नदीच्या जवळ वसल्याने गावाला वर्षभर हिरवळ आणि समृद्ध पाण्याचे स्त्रोत उपलब्ध आहेत." },
+        { icon: "music", title: "भजन व लोककला", desc: "गावातील पारंपरिक भजनी मंडळ, हरिनाम सप्ताह आणि गणेशोत्सवातील सांस्कृतिक कार्यक्रम ही गावच्या एकोप्याची ओळख आहे." }
+      ];
+
+      return (
+        <section id="culture" className="relative py-24 px-4 js-reveal overflow-hidden">
+          <div className="absolute inset-0 z-0 bg-stone-950">
+            <img 
+              src={resolveImg("chabina.jpeg")} 
+              alt="Culture Background" 
+              className="w-full h-full object-cover opacity-30 scale-105 transform transition-transform duration-[15s] hover:scale-110"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=1600&q=80';
+              }}
+            />
+            <div className="absolute inset-0 bg-white/80 backdrop-blur-[4px]"></div>
+          </div>
+
+          <div className="max-w-7xl mx-auto relative z-10">
+            <div className="grid lg:grid-cols-5 gap-12 items-center">
+              
+              {/* Left Side: Text and Cards */}
+              <div className="lg:col-span-3">
+                <div className="text-left mb-12">
+                  <span className="bg-white text-vanilla-800 text-xs px-4 py-2 rounded-full font-black uppercase border border-vanilla-300 shadow-sm inline-block mb-4">
+                    कोकण संस्कृती व शेती
+                  </span>
+                  <h2 className="text-4xl sm:text-5xl font-black text-stone-900">शेती व संस्कृती</h2>
+                  <p className="text-stone-800 text-lg mt-4 max-w-2xl font-bold">कोकणच्या निसर्गाचे वरदान आणि सांस्कृतिक परंपरांची जोपासना.</p>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                  {cultureItems.map((item, idx) => (
+                    <TiltCard key={idx} className="bg-white/95 backdrop-blur-md border border-white shadow-xl rounded-[2rem] p-6 hover:shadow-2xl hover:bg-white transition-all flex flex-col gap-4 items-start group">
+                      <div className="w-14 h-14 bg-vanilla-100 text-vanilla-700 rounded-2xl flex items-center justify-center shrink-0 shadow-sm pop-out font-black border border-vanilla-300 group-hover:scale-110 transition-transform">
+                        <Icon name={item.icon} className="w-7 h-7" />
+                      </div>
+                      <div className="pop-out-more">
+                        <h3 className="font-black text-xl text-stone-900 mb-2">{item.title}</h3>
+                        <p className="text-stone-700 text-sm leading-relaxed font-medium">{item.desc}</p>
+                      </div>
+                    </TiltCard>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right Side: Large Video Frame */}
+              <div className="lg:col-span-2 lg:mt-0 mt-8">
+                <div className="bg-stone-900 rounded-[2.5rem] shadow-2xl border-[6px] border-white relative overflow-hidden group w-full aspect-[4/5] lg:aspect-auto lg:h-[700px] flex items-center justify-center">
+                  
+                  {/* Real Video Added: Continuous Loop, AutoPlay, Muted */}
+                  <video 
+                    className="absolute inset-0 w-full h-full object-cover z-0 scale-[1.01]" 
+                    autoPlay 
+                    loop 
+                    muted 
+                    playsInline
+                  >
+                    <source src={resolveImg("chabinavideo.mp4")} type="video/mp4" />
+                    तुमचा ब्राउझर व्हिडिओ टॅगला सपोर्ट करत नाही.
+                  </video> 
+
+                  {/* Subtle vignette over video so it blends nicely */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-stone-900/40 via-transparent to-transparent z-10 pointer-events-none"></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    const InfraSection = () => {
+      const infraList = [
+        { title: "प्राथमिक शाळा", desc: "दर्जेदार शिक्षणासाठी जिल्हा परिषद पूर्ण प्राथमिक शाळा.", tag: "शिक्षण", icon: "graduation-cap", color: "bg-blue-100 text-blue-600" },
+        { title: "अंगणवाडी केंद्रे", desc: "लहान मुलांच्या पोषणासाठी ३ अंगणवाडी केंद्रे कार्यरत.", tag: "बालविकास", icon: "baby", color: "bg-pink-100 text-pink-600" },
+        { title: "आरोग्य उपकेंद्र", desc: "मूलभूत वैद्यकीय उपचार व लसीकरण सुविधा.", tag: "आरोग्य", icon: "activity", color: "bg-green-100 text-green-600" },
+        { title: "ई-सेतू व वाचनालय", desc: "डिजिटल सेवा, शासकीय दाखले आणि वाचनालय.", tag: "डिजिटल सेवा", icon: "laptop", color: "bg-purple-100 text-purple-600" }
+      ];
+
+      return (
+        <section id="infra" className="py-24 px-4 bg-vanilla-50 dot-pattern-light js-reveal relative overflow-hidden">
+          <div className="max-w-6xl mx-auto relative z-10 text-center">
+            <div className="mb-16">
+              <span className="inline-block border border-vanilla-300 bg-vanilla-200 text-stone-900 text-[11px] px-4 py-1.5 rounded-full font-bold uppercase tracking-wider mb-4">
+                पायाभूत सुविधा
+              </span>
+              <h2 className="text-4xl sm:text-5xl font-black text-stone-900">संस्था व सार्वजनिक सुविधा</h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-left">
+              {infraList.map((item, idx) => (
+                <div key={idx} className="p-6 transition-transform hover:-translate-y-2 group cursor-pointer bg-white rounded-3xl shadow-md hover:shadow-xl border border-vanilla-200">
+                  <div className={`w-16 h-16 ${item.color} rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform`}>
+                    <Icon name={item.icon} className="w-8 h-8" />
+                  </div>
+                  <span className="inline-block border border-vanilla-200 bg-vanilla-50 text-stone-700 text-[10px] font-extrabold px-3 py-1 rounded-md uppercase mb-4 shadow-sm">
+                    {item.tag}
+                  </span>
+                  <h3 className="font-black text-2xl text-stone-900 mb-3">{item.title}</h3>
+                  <p className="text-sm text-stone-600 leading-relaxed font-medium">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    const LeadershipSection = ({ onOpenLightbox }) => {
+      const leaders = [
+        { file: "shinde.png", name: "श्री. एकनाथ शिंदे", role: "मुख्यमंत्री", tagBg: "bg-vanilla-100 text-vanilla-800 border-vanilla-300" },
+        { file: "fadnvis.png", name: "श्री. देवेंद्र फडणवीस", role: "उपमुख्यमंत्री", tagBg: "bg-vanilla-100 text-vanilla-800 border-vanilla-300" },
+        { file: "sunetra-pawar-810x1024.webp", name: "सौ. सुनेत्रा पवार", role: "उपमुख्यमंत्री", tagBg: "bg-vanilla-100 text-vanilla-800 border-vanilla-300" },
+        { file: "kadam.png", name: "श्री. योगेश कदम", role: "राज्यमंत्री", tagBg: "bg-white text-stone-800 border-stone-200" },
+        { file: "vijay-gore.webp", name: "श्री. जयकुमार गोरे", role: "मंत्री, ग्रामविकास", tagBg: "bg-white text-stone-800 border-stone-200" },
+        { file: "chandrkant.jpeg", name: "डॉ. चंद्रकांत पुलकुंडवार", role: "प्रधान सचिव", tagBg: "bg-stone-100 text-stone-600 border-stone-200" }
+      ];
+
+      return (
+        <section id="admin" className="py-24 px-4 bg-vanilla-50 border-t border-vanilla-200 text-center js-reveal">
+          <div className="max-w-7xl mx-auto">
+            <span className="bg-white text-vanilla-800 text-xs px-4 py-2 rounded-full font-black uppercase border border-vanilla-300 shadow-sm inline-block mb-4">
+              राज्य शासन नेतृत्व
+            </span>
+            <h2 className="text-4xl sm:text-5xl font-black mb-4 text-stone-900">महाराष्ट्र शासन व मार्गदर्शक</h2>
+            <p className="text-stone-600 text-lg max-w-2xl mx-auto font-medium mb-16">ग्रामविकास आणि राज्य प्रशासनाचे मा. लोकप्रतिनिधी व अधिकारी.</p>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
+              {leaders.map((l, idx) => {
+                const imgPath = resolveImg(l.file);
+                return (
+                  <TiltCard 
+                    key={idx} 
+                    onClick={() => onOpenLightbox(imgPath, `${l.name} - ${l.role}`)}
+                    className="bg-white p-4 rounded-[2rem] border border-vanilla-200 shadow-md hover:shadow-xl hover:border-vanilla-400 transition-all cursor-pointer group"
+                  >
+                    <div className="w-full h-40 sm:h-48 bg-vanilla-50 rounded-2xl mb-4 overflow-hidden relative border border-vanilla-100 pop-out">
+                      <img 
+                        src={imgPath} 
+                        alt={l.name} 
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(l.name)}&background=F3E5AB&color=1c1917`;
+                        }}
+                      />
+                    </div>
+                    <h3 className="font-black text-stone-900 text-sm sm:text-base mb-2 pop-out-more leading-tight">{l.name}</h3>
+                    <span className={`inline-block text-[10px] font-black px-3 py-1 rounded-full border pop-out shadow-sm ${l.tagBg}`}>{l.role}</span>
+                  </TiltCard>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    const TemplesSection = ({ onOpenLightbox }) => {
+      const temples = [
+        { file: "temple.jpeg", title: "ग्रामदैवत मंदिर - पेढांबे", tag: "मुख्य ग्रामदैवत", tagBg: "bg-vanilla-600 text-white" },
+        { file: "ganpati.jpg", title: "श्री गणपती मंदिर", tag: "पवित्र मंदिर", tagBg: "bg-gov-saffron text-white" },
+        { file: "shiv.jpg", title: "श्री शिव मंदिर", tag: "प्राचीन मंदिर", tagBg: "bg-stone-800 text-white" }
+      ];
+
+      return (
+        <section id="temples" className="py-24 px-4 bg-white js-reveal">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-16">
+              <div className="w-16 h-16 mx-auto bg-vanilla-100 text-vanilla-700 rounded-2xl flex items-center justify-center mb-6 float-anim border border-vanilla-300 font-black shadow-sm">
+                <Icon name="flower-2" className="w-8 h-8" />
+              </div>
+              <h2 className="text-4xl sm:text-5xl font-black mb-4 text-stone-900">देवस्थाने आणि धार्मिक संस्कृती</h2>
+              <p className="text-stone-600 text-lg max-w-2xl mx-auto font-medium">पेढांबे गावचे श्रद्धास्थान, ग्रामदैवत आणि पवित्र मंदिरे.</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {temples.map((t, idx) => {
+                const imgPath = resolveImg(t.file);
+                return (
+                  <TiltCard 
+                    key={idx} 
+                    onClick={() => onOpenLightbox(imgPath, t.title)}
+                    className="bg-white rounded-[2.5rem] p-3 border-2 border-vanilla-100 shadow-xl hover:shadow-2xl hover:border-vanilla-300 transition-all cursor-pointer group"
+                  >
+                    <div className="h-72 bg-stone-100 relative overflow-hidden rounded-[2rem] pop-out">
+                      <img 
+                        src={imgPath} 
+                        alt={t.title} 
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = 'https://images.unsplash.com/photo-1567157577867-05ccb1388e66?auto=format&fit=crop&w=600&q=80';
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-stone-900/90 via-stone-900/20 to-transparent"></div>
+                      <div className="absolute bottom-6 left-6 right-6 text-left pop-out-more">
+                        <span className={`${t.tagBg} font-black text-[11px] px-3 py-1 rounded-lg uppercase shadow-md inline-block mb-3`}>{t.tag}</span>
+                        <h3 className="font-black text-white text-2xl drop-shadow-md">{t.title}</h3>
+                      </div>
+                    </div>
+                  </TiltCard>
+                )
+              })}
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    const TourismSection = () => {
+      const tourismSpots = [
+        { 
+          id: 1, 
+          label: "निसर्गरम्य धबधबा", 
+          image: "dhabdhba1.png", 
+          link: "https://maps.app.goo.gl/7MVSTeUjgJT63P2V7",
+          desc: "निसर्गाच्या कुशीत लपलेला हा मनमोहक धबधबा पर्यटकांचे मुख्य आकर्षण आहे. पावसाळ्यात याचे रौद्र आणि सुंदर रूप पाहण्यासारखे असते. येथे भेट देऊन तुम्ही निसर्गाच्या शांततेचा अनुभव घेऊ शकता."
+        },
+        { 
+          id: 2, 
+          label: "डी स्टार Water Park(D Star)", 
+          image: "Dstar.png", 
+          link: "https://maps.app.goo.gl/hjD4SuJ3iCycfSqw9?g_st=iw",
+          desc: "निसर्गरम्य परिसरातील हे एक उत्तम ठिकाण असून कुटुंबियांसोबत आणि मित्रपरिवारासोबत निवांत वेळ घालवण्यासाठी अतिशय योग्य आहे. इथून निसर्गाचे विहंगम दृश्य पाहता येते."
+        },
+        { 
+          id: 3, 
+          label: "निसर्ग दर्शन (Nature Point)", 
+          image: "nature.png", 
+          link: "https://maps.app.goo.gl/NbNKSVqLf8LVsDU17",
+          desc: "सभोवतालची हिरवीगार झाडी, शुद्ध हवा आणि शांतता यामुळे हे ठिकाण निसर्गप्रेमींसाठी एक उत्तम पर्वणी ठरते. रोजच्या धावपळीपासून दूर जाऊन स्वतःला ताजेतवाने करण्यासाठी उत्तम ठिकाण."
+        }
+      ];
+
+      return (
+        <section id="tourism" className="py-24 px-4 bg-vanilla-50 border-y border-vanilla-200 js-reveal relative overflow-hidden">
+          <div className="absolute inset-0 hero-pattern opacity-30"></div>
+          <div className="max-w-6xl mx-auto relative z-10">
+            <div className="text-center mb-14">
+              <div className="w-16 h-16 mx-auto bg-white text-vanilla-700 rounded-2xl flex items-center justify-center mb-6 border border-vanilla-300 shadow-sm float-anim">
+                <Icon name="map-pinned" className="w-8 h-8" />
+              </div>
+              <h2 className="text-4xl sm:text-5xl font-black mb-4 text-stone-900">पेढांबे गावातील पर्यटन स्थळे</h2>
+              <p className="text-stone-600 text-lg max-w-2xl mx-auto font-medium">पेढांबे आणि परिसरातील निसर्गरम्य ठिकाणांना भेट द्या आणि मनमोहक निसर्गाचा आनंद घ्या.</p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-8">
+              {tourismSpots.map((spot) => (
+                <div key={spot.id} className="bg-white rounded-[2rem] border-2 border-vanilla-100 shadow-lg p-5 sm:p-6 flex flex-col sm:flex-row items-stretch gap-6 hover:border-vanilla-300 hover:shadow-2xl transition-all">
+                  
+                  <div className="w-full sm:w-2/5 relative rounded-[1.5rem] overflow-hidden shadow-sm h-64 sm:h-auto shrink-0 border border-stone-100">
+                    <img 
+                      src={resolveImg(spot.image)} 
+                      alt={spot.label} 
+                      className="w-full h-full object-cover hover:scale-110 transition-transform duration-700"
+                      onError={(e) => { 
+                        e.target.onerror = null; 
+                        e.target.src = 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=800&q=80'; 
+                      }}
+                    />
+                  </div>
+
+                  <div className="flex-1 flex flex-col justify-center py-2">
+                    <h3 className="font-black text-3xl text-stone-900 mb-4">{spot.label}</h3>
+                    <p className="text-stone-600 text-lg font-medium leading-relaxed mb-6">{spot.desc}</p>
+                    
+                    <a
+                      href={spot.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex sm:w-max items-center justify-center gap-3 rounded-2xl bg-vanilla-600 hover:bg-vanilla-700 text-white px-8 py-4 font-black text-lg shadow-md hover:-translate-y-0.5 transition-all"
+                      aria-label={`${spot.label} नकाशावर पहा`}
+                    >
+                      नकाशावर पहा
+                      <Icon name="external-link" className="w-5 h-5" />
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    const FAQSection = () => {
+      const [openIdx, setOpenIdx] = useState(0);
+
+      const faqs = [
+        { q: "पेढांबे गावाला कसे पोहोचायचे?", a: "पेढांबे गाव चिपळूण तालुक्यात स्थित आहे. चिपळूण रेल्वे स्थानक व एसटी बस स्टँडपासून १५ किमी अंतरावर आहे. चिपळूणहून नियमित एसटी बसेस व रिक्षा उपलब्ध असतात." },
+        { q: "ग्रामपंचायत कार्यालय उघडण्याची वेळ कोणती आहे?", a: "पेढांबे ग्रामपंचायत कार्यालय सोमवार ते शनिवार सकाळी १०:०० ते सायंकाळी ५:४५ या वेळेत उघडे असते (शासकीय सुट्ट्या सोडून)." },
+        { q: "पेढांबे गावातील मुख्य व्यवसाय कोणता कोणता आहे?", a: "शेती हा पेढांबे गावातील मुख्य व्यवसाय असून आंबा (हापूस), काजू बागायत आणि भातशेती मोठ्या प्रमाणावर केली जाते." },
+        { q: "गावामध्ये प्राथमिक आरोग्य सुविधा उपलब्ध आहे का?", a: "होय, पेढांबे गावात प्राथमिक आरोग्य उपकेंद्र उपलब्ध असून मूलभूत वैद्यकीय तपासणी व लसीकरण केले जाते." }
+      ];
+
+      return (
+        <section id="faq" className="py-24 px-4 bg-vanilla-50 js-reveal">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-16">
+              <span className="bg-white text-vanilla-800 text-xs px-4 py-2 rounded-full font-black uppercase border border-vanilla-300 shadow-sm inline-block mb-4">
+                माहिती व प्रश्नोत्तरे
+              </span>
+              <h2 className="text-4xl font-black text-stone-900">वारंवार विचारले जाणारे प्रश्न</h2>
+            </div>
+
+            <div className="space-y-4">
+              {faqs.map((faq, idx) => (
+                <div key={idx} className={`bg-white border ${openIdx === idx ? 'border-vanilla-400 shadow-md' : 'border-vanilla-200 shadow-sm'} rounded-3xl overflow-hidden transition-all duration-300`}>
+                  <button 
+                    onClick={() => setOpenIdx(openIdx === idx ? null : idx)}
+                    className="w-full px-8 py-5 text-left font-black text-lg text-stone-900 flex justify-between items-center hover:bg-vanilla-50 transition-colors"
+                  >
+                    <span>{faq.q}</span>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${openIdx === idx ? 'bg-vanilla-100 text-vanilla-800' : 'bg-stone-100 text-stone-500'}`}>
+                      <Icon name={openIdx === idx ? "minus" : "plus"} className="w-5 h-5 shrink-0" />
+                    </div>
+                  </button>
+                  <div className={`overflow-hidden transition-all duration-300 ${openIdx === idx ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'}`}>
+                    <div className="px-8 pb-6 text-base text-stone-600 leading-relaxed font-medium">
+                      {faq.a}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    const ContactSection = () => {
+      return (
+        <section id="contact" className="pt-24 pb-32 px-4 bg-white js-reveal relative overflow-hidden">
+          <div className="max-w-6xl mx-auto text-center relative z-10">
+            <span className="bg-vanilla-100 text-vanilla-800 text-xs px-4 py-2 rounded-full font-black uppercase border border-vanilla-300 shadow-sm inline-block mb-4">
+              संपर्क व आपत्कालीन डिरेक्टरी
+            </span>
+            <h2 className="text-4xl sm:text-5xl font-black mb-4 text-stone-900">कार्यालयाशी संपर्क साधा</h2>
+            <p className="text-stone-600 text-lg max-w-xl mx-auto mb-16 font-medium">कोणत्याही चौकशीसाठी किंवा आपत्कालीन मदतीसाठी खालील क्रमांकांवर संपर्क साधा.</p>
+            
+            <div className="grid md:grid-cols-3 gap-8 text-left mb-16">
+              <TiltCard className="bg-vanilla-50/50 p-8 rounded-[2.5rem] border border-vanilla-200 shadow-lg flex flex-col justify-between hover:bg-white transition-colors">
+                <div>
+                  <div className="w-14 h-14 bg-vanilla-100 text-vanilla-700 rounded-2xl flex items-center justify-center mb-6 pop-out font-black border border-vanilla-300 shadow-sm">
+                    <Icon name="map-pin" className="w-6 h-6" />
+                  </div>
+                  <h4 className="font-black text-stone-900 text-xl mb-3 pop-out-more">कार्यालयीन पत्ता</h4>
+                  <p className="text-sm text-stone-600 leading-relaxed font-medium pop-out">
+                    पेढांबे ग्रामपंचायत कार्यालय,<br />
+                    मु. पो. पेढांबे, तालुका चिपळूण,<br />
+                    जिल्हा रत्नागिरी, महाराष्ट्र - ४१५६०३
+                  </p>
+                </div>
+              </TiltCard>
+
+              <TiltCard className="bg-vanilla-50/50 p-8 rounded-[2.5rem] border border-vanilla-200 shadow-lg flex flex-col justify-between hover:bg-white transition-colors">
+                <div>
+                  <div className="w-14 h-14 bg-vanilla-100 text-vanilla-700 rounded-2xl flex items-center justify-center mb-6 pop-out font-black border border-vanilla-300 shadow-sm">
+                    <Icon name="phone" className="w-6 h-6" />
+                  </div>
+                  <h4 className="font-black text-stone-900 text-xl mb-3 pop-out-more">दूध्वनी व ईमेल</h4>
+                  <p className="text-sm text-stone-600 leading-relaxed font-medium pop-out">
+                    दूध्वनी: ०२३५५-२३०१०१<br />
+                    हेल्पलाईन: +९१ ९८२२१ XXXXX<br />
+                    ईमेल: pedambegp@gmail.com
+                  </p>
+                </div>
+              </TiltCard>
+
+              <TiltCard className="bg-vanilla-50/50 p-8 rounded-[2.5rem] border border-vanilla-200 shadow-lg flex flex-col justify-between hover:bg-white transition-colors">
+                <div>
+                  <div className="w-14 h-14 bg-vanilla-100 text-vanilla-700 rounded-2xl flex items-center justify-center mb-6 pop-out font-black border border-vanilla-300 shadow-sm">
+                    <Icon name="clock" className="w-6 h-6" />
+                  </div>
+                  <h4 className="font-black text-stone-900 text-xl mb-3 pop-out-more">कार्यालयीन वेळ</h4>
+                  <p className="text-sm text-stone-600 leading-relaxed font-medium pop-out">
+                    सोमवार ते शनिवार:<br />
+                    सकाळी १०:०० ते सायंकाळी ५:४५<br />
+                    (शासकीय सुट्टीचे दिवस सोडून)
+                  </p>
+                </div>
+              </TiltCard>
+            </div>
+
+            <div className="bg-vanilla-500 rounded-[2.5rem] p-8 sm:p-10 text-left shadow-2xl relative overflow-hidden max-w-5xl mx-auto border border-vanilla-600 mt-8 mb-[-120px] z-20">
+              <div className="flex items-center gap-4 mb-8 relative z-10">
+                <div className="bg-stone-900 p-3 rounded-full shadow-lg">
+                  <Icon name="phone-call" className="w-6 h-6 text-vanilla-500 animate-pulse" />
+                </div>
+                <h3 className="font-black text-2xl sm:text-3xl text-stone-950">महत्वाचे व आपत्कालीन दूरध्वनी क्रमांक</h3>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 relative z-10">
+                {[
+                  { label: "रुग्णवाहिका", num: "१०८" },
+                  { label: "पोलीस ठाणे (चिपळूण)", num: "०२३५५-२५२०३३" },
+                  { label: "महावितरण (वीज)", num: "१८००-२३३-३४३५" },
+                  { label: "प्राथमिक आरोग्य केंद्र", num: "०२३५५-२३०२२०" }
+                ].map((item, idx) => (
+                  <div key={idx} className="bg-vanilla-50 p-6 rounded-2xl border border-white shadow-md hover:border-stone-400 transition-colors">
+                    <p className="text-stone-500 text-[11px] font-bold uppercase tracking-wider mb-2">{item.label}</p>
+                    <p className="text-2xl font-black text-stone-900">{item.num}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div>
+        </section>
+      );
+    };
+
+    const LightboxModal = ({ activeImg, onClose }) => {
+      if (!activeImg) return null;
+
+      return (
+        <div className="fixed inset-0 z-[60] bg-white/90 backdrop-blur-xl flex items-center justify-center p-4 js-reveal is-visible" onClick={onClose}>
+          <div className="relative max-w-5xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl scale-100 transition-transform" onClick={(e) => e.stopPropagation()}>
+            <button onClick={onClose} className="absolute top-4 right-4 bg-stone-200/80 backdrop-blur-md text-stone-900 p-2 rounded-full hover:bg-stone-300 transition-colors z-10 shadow-sm">
+              <Icon name="x" className="w-6 h-6" />
+            </button>
+            <img src={activeImg.src} alt={activeImg.title} className="w-full max-h-[80vh] object-contain bg-stone-50" />
+            <div className="p-5 bg-white border-t border-vanilla-200 flex justify-between items-center">
+              <h3 className="font-black text-lg text-stone-900">{activeImg.title}</h3>
+              <span className="text-xs font-bold text-stone-500 uppercase tracking-wide px-3 py-1 bg-vanilla-50 rounded-full border border-vanilla-200">फोटो गॅलरी</span>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    const ScrollToTop = () => {
+      const [visible, setVisible] = useState(false);
+
+      useEffect(() => {
+        const toggleVisible = () => setVisible(window.scrollY > 400);
+        window.addEventListener('scroll', toggleVisible);
+        return () => window.removeEventListener('scroll', toggleVisible);
+      }, []);
+
+      if (!visible) return null;
+
+      return (
+        <button 
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="fixed bottom-8 right-8 z-40 bg-vanilla-500 hover:bg-vanilla-600 text-stone-950 p-4 rounded-xl shadow-2xl hover:-translate-y-1 transition-all duration-300 float-anim font-black border border-white"
+          title="वर जा"
+        >
+          <Icon name="arrow-up" className="w-6 h-6" />
+        </button>
+      );
+    };
+
+    const App = () => {
+      const [lightboxImg, setLightboxImg] = useState(null);
+
+      useScrollReveal();
+
+      const triggerConfetti = () => {
+        if (window.confetti) {
+          window.confetti({ particleCount: 60, spread: 70, origin: { y: 0.8 }, colors: ['#ea580c', '#10b981', '#b89d42'] });
+        }
+      };
+
+      return (
+        <div className="min-h-screen">
+          <Marquee />
+          <Navbar />
+          <HeroSection />
+          <AboutSection onOpenLightbox={(src, title) => setLightboxImg({ src, title })} />
+          <LocalBodySection />
+          <CultureSection />
+          <InfraSection />
+          <LeadershipSection onOpenLightbox={(src, title) => setLightboxImg({ src, title })} />
+          <TemplesSection onOpenLightbox={(src, title) => setLightboxImg({ src, title })} />
+          <TourismSection />
+          <FAQSection />
+          <ContactSection />
+
+          <footer className="bg-vanilla-900 text-vanilla-100 pt-48 pb-8 border-t-[10px] border-vanilla-500 js-reveal relative z-10 shadow-[0_-15px_30px_-15px_rgba(0,0,0,0.3)]">
+            <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-12">
+              <div>
+                <div className="flex items-center gap-4 mb-6 cursor-pointer" onClick={triggerConfetti}>
+                  <div className="w-12 h-12 rounded-xl bg-vanilla-500 text-vanilla-950 font-black text-2xl flex items-center justify-center shadow-md">
+                    ग्रा
+                  </div>
+                  <div>
+                    <h4 className="font-black text-xl text-white leading-tight">पेढांबे ग्रामपंचायत</h4>
+                    <p className="text-[10px] text-vanilla-300 uppercase tracking-widest font-bold mt-1">PEDAMBE GRAMPANCHAYAT</p>
+                  </div>
+                </div>
+                <p className="text-sm text-vanilla-200 leading-relaxed font-medium">
+                  पेढांबे, तालुका चिपळूण, जिल्हा रत्नागिरी, महाराष्ट्र राज्य अधिकृत माहितीपर संकेतस्थळ.
+                </p>
+              </div>
+
+              <div>
+                <h4 className="font-black text-white text-base mb-6">उपयुक्त शासकीय दुवे</h4>
+                <ul className="space-y-4 text-sm font-medium">
+                  <li><a href="https://ratnagiri.gov.in" target="_blank" className="hover:text-vanilla-400 transition-colors flex items-center gap-2"><Icon name="external-link" className="w-4 h-4 text-vanilla-500" /> रत्नागिरी जिल्हा प्रशासन</a></li>
+                  <li><a href="https://egramswaraj.gov.in" target="_blank" className="hover:text-vanilla-400 transition-colors flex items-center gap-2"><Icon name="external-link" className="w-4 h-4 text-vanilla-500" /> ई-ग्राम स्वराज पोर्टल</a></li>
+                  <li><a href="https://maharashtra.gov.in" target="_blank" className="hover:text-vanilla-400 transition-colors flex items-center gap-2"><Icon name="external-link" className="w-4 h-4 text-vanilla-500" /> महाराष्ट्र शासन पोर्टल</a></li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="font-black text-white text-base mb-6">जलद नेव्हिगेशन</h4>
+                <ul className="space-y-4 text-sm font-medium">
+                  <li><a href="#home" className="hover:text-vanilla-400 transition-colors inline-block">मुखपृष्ठ</a></li>
+                  <li><a href="#about" className="hover:text-vanilla-400 transition-colors inline-block">गावाची माहिती</a></li>
+                  <li><a href="#local-body" className="hover:text-vanilla-400 transition-colors inline-block">स्थानिक प्रशासन</a></li>
+                  <li><a href="#culture" className="hover:text-vanilla-400 transition-colors inline-block">शेती व संस्कृती</a></li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="font-black text-white text-base mb-6">संपर्क</h4>
+                <div className="space-y-4 text-sm font-medium flex flex-col">
+                  <span className="flex items-start gap-3 text-vanilla-200">
+                    <Icon name="map-pin" className="w-5 h-5 shrink-0 text-vanilla-500" />
+                    मु. पो. पेढांबे, तालुका चिपळूण, जिल्हा रत्नागिरी<br/>- ४१५६०३
+                  </span>
+                  <span className="flex items-center gap-3 mt-2 text-vanilla-200">
+                    <Icon name="phone" className="w-5 h-5 shrink-0 text-vanilla-500" />
+                    ०२३५५-२३०१०१
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="max-w-7xl mx-auto px-4 mt-16 pt-8 border-t border-vanilla-800 flex flex-col sm:flex-row justify-between items-center text-xs font-medium text-vanilla-300">
+              <p>© २०२६ पेढांबे ग्रामपंचायत, सर्व हक्क राखीव.</p>
+              <p className="mt-4 sm:mt-0 flex items-center gap-2 text-vanilla-200 font-bold">
+                <Icon name="shield-check" className="w-4 h-4 text-vanilla-500" /> महाराष्ट्र शासन | ग्रामविकास उपक्रम
+              </p>
+            </div>
+          </footer>
+
+          <ScrollToTop />
+          <LightboxModal activeImg={lightboxImg} onClose={() => setLightboxImg(null)} />
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
